@@ -1,13 +1,16 @@
 from django.forms.models import model_to_dict
 from main.models import Transaction
 
-def get_user_transactions(user_id):
-    transactions = Transaction.objects.filter(user_id=user_id)
+def get_user_transactions(user_id, date=None):
+    if date:
+        transactions = Transaction.objects.filter(user_id=user_id, date=date)
+    else: 
+        transactions = Transaction.objects.filter(user_id=user_id)
     transaction_list = []
 
     for transaction in transactions:
         transaction_dict = model_to_dict(transaction)
-        transaction_dict['category'] = transaction.category.name  # Заміна ID на назву категорії
+        transaction_dict['category'] = transaction.category.name
         transaction_list.append(transaction_dict)
 
     print(transaction_list)

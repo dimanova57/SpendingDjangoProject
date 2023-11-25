@@ -57,9 +57,69 @@ fetch("http://localhost:8000/", {
     body: JSON.stringify({'token': token})
 })
     .then(response => response.json())
-    .then(data => console.log(data));
+    .then(data => {
+        console.log(data);
+        balance = document.getElementById('balance_user');
+        balance.innerHTML = `$${data['balance']}`;
+        var transactions = document.getElementById('all_transactions');
+        for (const transactionId in data['transactions']) {
+            if (data['transactions'].hasOwnProperty(transactionId)) {
+                transactions.innerHTML += `
+                <div class="bottom-data">
+                    <div class="orders">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="padding-right: 10px;">${data['transactions'][transactionId]['amount']}$</th>
+                                    <th style="padding-right: 25px;">${data['transactions'][transactionId]['date']}</th>
+                                    <th>${data['transactions'][transactionId]['category']}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>`
+            }
+        }
+    });
 
-    
+
+document.getElementById('search').addEventListener('submit', function (el) {
+    el.preventDefault();
+    var searchForm = document.getElementById('search');
+    date = searchForm.date.value;
+    console.log(date);
+    fetch('http://localhost:8000/search/', {
+        method: 'POST',
+        body: JSON.stringify({'token': getCookie('token'), 'date': date}),
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        var transactions = document.getElementById('all_transactions');
+        transactions.innerHTML = ``;
+        for (const transactionId in data['transaction_list']) {
+            if (data['transaction_list'].hasOwnProperty(transactionId)) {
+                transactions.innerHTML += `
+                <div class="bottom-data">
+                    <div class="orders">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="padding-right: 10px;">${data['transaction_list'][transactionId]['amount']}$</th>
+                                    <th style="padding-right: 25px;">${data['transaction_list'][transactionId]['date']}</th>
+                                    <th>${data['transaction_list'][transactionId]['category']}</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>`
+            }
+        }
+    });
+});
+
+
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

@@ -73,7 +73,7 @@ class CreateTransactionView(View):
         token = data['token']
         jwt_data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
         user_id = jwt_data['user_id']   
-        if data['category'] != 7:
+        if data['category'] != 6:
             data['amount'] = -data['amount']
         form = TransactionForm({'amount': data['amount'], 'date': data['date'], 'category': data['category'], 'user': user_id})
         if form.is_valid():
@@ -81,3 +81,19 @@ class CreateTransactionView(View):
             return JsonResponse({'message': 'Success creating', 'transaction_id': transaction.id}, status=201)
         else:
             return JsonResponse({'message': f'{form.errors}'}, status=400)
+        
+        
+        
+@method_decorator(csrf_exempt, name='dispatch')
+class SearchTransactionsView(View):
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            jwt_data = jwt.decode(data['token'], SECRET_KEY, algorithms=['HS256'])
+            transaction_list = get_user_transactions(jwt_data['user_id'], data['date'])
+
+            return JsonResponse({'message': 'Data has found successful', 'transaction_list': transaction_list})
+        
+        except Exception as err:
+            return JsonResponse({'message': f'{err}'})

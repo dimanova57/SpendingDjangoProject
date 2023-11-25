@@ -38,9 +38,9 @@
         <!-- Navbar -->
         <nav>
             <i class='bx bx-menu'></i>
-            <form action="#">
+            <form id="search">
                 <div class="form-input">
-                    <input type="search" placeholder="Search...">
+                    <input name='date' type="date" placeholder="Search...">
                     <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                 </div>
             </form>
@@ -63,7 +63,7 @@
                 <li><i class='bx bx-dollar-circle'></i>
                     <span class="info">
                         <h3>
-                            $0
+                            <div id="balance_user">$0</div>
                         </h3>
                         <p>Balance</p>
                     </span>
@@ -81,14 +81,15 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Total</th>
-                                <th>Transaction Date</th>
+                                <th style="padding-right: 40px;">Total</th>
+                                <th style="padding-right: 10px;">Transaction Date</th>
                                 <th>Category</th>
                             </tr>
                         </thead>
-                        
                     </table>
                 </div>
+            </div>
+            <div id="all_transactions">
 
             </div>
 

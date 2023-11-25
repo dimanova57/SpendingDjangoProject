@@ -25,23 +25,6 @@ def signup_test():
         print("Failed to create a user. Status code:", response.status_code)
 
 
-def create_transaction_test():
-
-    base_url = "http://localhost:8000/"
-
-    user_data = {
-        'amount': 100,
-        'date': '2023-11-07',
-        'description': 'transactionmoney',
-        'category': 2,
-        'user': 2
-
-    }
-
-    response = requests.post(base_url, data=user_data)
-    print(response.json())
-    print(response.status_code)
-
 import json
 from django.core import serializers
 
@@ -66,8 +49,8 @@ def create_transaction():
     base_url = "http://localhost:8000/create_transaction/"
     data = {'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpbWEifQ.Q9YUkEccrshO6hZ6I_AoIan4w7EuvTKNiR2y8oGtGnk',
             'amount': 100.00,
-            'date': '2023-11-25',
-            'category': 3,
+            'date': '2023-11-26',
+            'category': 6,
         }
     json_data = json.dumps(data)
     headers = {'Content-Type': 'application/json'}
@@ -94,15 +77,25 @@ def get_history_transactions():
     if response.status_code == 200:
         data = response.json()  
         print(data)
+        
     else:
         print("You are not logined", response.status_code)
+        
+        
+def search_data():
+    base_url = 'http://localhost:8000/search/'
+    data = {
+        'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpbWEifQ.Q9YUkEccrshO6hZ6I_AoIan4w7EuvTKNiR2y8oGtGnk',
+        'date': '2023-11-26'
+    }
+    json_data = json.dumps(data)
+    
+    response = requests.post(base_url, json_data)
+    
+    print(response.json())
 
 
+
 create_transaction()
 create_transaction()
-create_transaction()
-create_transaction()
-create_transaction()
-create_transaction()
-create_transaction()
-get_history_transactions()
+get_transactions()
