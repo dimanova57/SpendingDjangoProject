@@ -60,7 +60,7 @@ fetch("http://localhost:8000/", {
     .then(data => {
         console.log(data);
         balance = document.getElementById('balance_user');
-        balance.innerHTML = `$${data['balance']}`;
+        balance.innerHTML = `${data['balance']}$`;
         var transactions = document.getElementById('all_transactions');
         for (const transactionId in data['transactions']) {
             if (data['transactions'].hasOwnProperty(transactionId)) {
@@ -76,6 +76,9 @@ fetch("http://localhost:8000/", {
                                 </tr>
                             </thead>
                         </table>
+                    </div>
+                    <div class="delete-button-container">
+                        <button class="delete-button" onclick="deleteTransaction(${data['transactions'][transactionId]['id']})"><img src='/images/delete.png' width="40" height="40"></button>
                     </div>
                 </div>`
             }
@@ -102,7 +105,7 @@ document.getElementById('search').addEventListener('submit', function (el) {
             if (data['transaction_list'].hasOwnProperty(transactionId)) {
                 transactions.innerHTML += `
                 <div class="bottom-data">
-                    <div class="orders">
+                    <div class="orders" id="${parseInt(data['transaction_list'][transactionId]['id'])}">
                         <table>
                             <thead>
                                 <tr>
@@ -113,11 +116,25 @@ document.getElementById('search').addEventListener('submit', function (el) {
                             </thead>
                         </table>
                     </div>
+                    <div class="delete-button-container">
+                        <button class="delete-button" onclick="deleteTransaction(${data['transaction_list'][transactionId]['id']})"><img src='/images/delete.png' width="40" height="40"></button>
+                    </div>  
                 </div>`
             }
         }
     });
 });
+
+function deleteTransaction(id){
+    fetch('http://localhost:8000/delete_transaction/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({'token': getCookie('token'), 'id': id})
+    })
+    .then(response => response.json())
+    .then(data => console.log(data));
+    location.reload();
+};
 
 
 function getCookie(name) {

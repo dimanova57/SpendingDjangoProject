@@ -48,9 +48,9 @@ def create_transaction():
 
     base_url = "http://localhost:8000/create_transaction/"
     data = {'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImRpbWEifQ.Q9YUkEccrshO6hZ6I_AoIan4w7EuvTKNiR2y8oGtGnk',
-            'amount': 100.00,
-            'date': '2023-11-26',
-            'category': 6,
+            'amount': 1000.00,
+            'date': '2023-11-24',
+            'category': 3,
         }
     json_data = json.dumps(data)
     headers = {'Content-Type': 'application/json'}
@@ -97,5 +97,5 @@ def search_data():
 
 
 create_transaction()
-create_transaction()
+
 get_transactions()
